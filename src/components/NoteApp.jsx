@@ -1,14 +1,14 @@
 import React from "react";
 import NoteAppBody from "./NoteAppBody";
 import NoteAppHeader from "./NoteAppHeader";
-import { getInitialData } from "../utils/index";
+import { getData, saveData } from "../utils/browserStorage";
 
 class NoteApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: getInitialData(),
-      searchKeyword: '',
+      notes: getData(),
+      searchKeyword: "",
     };
 
     this.handleDelete = this.handleDelete.bind(this);
@@ -22,42 +22,41 @@ class NoteApp extends React.Component {
   }
 
   handleDelete(id) {
-    this.setState({
-      notes: this.state.notes.filter((note) => note.id !== id),
+    this.setState((prevState) => {
+      const updatedNotes = prevState.notes.filter((note) => note.id !== id);
+      saveData(updatedNotes);
+      return { notes: updatedNotes };
     });
   }
 
   handleArchive(id) {
     this.setState((prevState) => {
-      return {
-        notes: prevState.notes.map((note) => {
-          if (note.id === id) {
-            if (note.archived) return { ...note, archived: false };
-            return { ...note, archived: true };
-          }
-          return note;
-        }),
-      };
+      const updatedNotes = prevState.notes.map((note) => {
+        if (note.id === id) return { ...note, archived: !note.archived };
+        return note;
+      });
+      saveData(updatedNotes);
+      return { notes: updatedNotes };
     });
   }
 
   handleAddNote(newNote) {
     this.setState((prevState) => {
-      return {
-        notes: [...prevState.notes, {
-          id: +new Date(),
-          title: newNote.title,
-          body: newNote.body,
-          createdAt: (new Date()).toISOString(),
-          archived: false
-        }]
-      }
+      const updatedNotes = [...prevState.notes, {
+        id: +new Date(),
+        title: newNote.title,
+        body: newNote.body,
+        createdAt: new Date().toISOString(),
+        archived: false,
+      }];
+      saveData(updatedNotes);
+      return { notes: updatedNotes };
     });
   }
-  
+
   handleSearch(keyword) {
     this.setState({
-      searchKeyword: keyword
+      searchKeyword: keyword,
     });
   }
 
@@ -65,19 +64,19 @@ class NoteApp extends React.Component {
     const notes = this.state.notes;
     const keyword = this.state.searchKeyword;
 
-    return notes.filter(note => note.title.toLowerCase().includes(keyword));
+    return notes.filter((note) => note.title.toLowerCase().includes(keyword));
   }
 
   generateActiveNotes() {
     return this.generateNotesWithSearch().filter(
       (note) => note.archived === false
-    )
+    );
   }
 
   generateArchiveNotes() {
     return this.generateNotesWithSearch().filter(
       (note) => note.archived === true
-    )
+    );
   }
 
   render() {
