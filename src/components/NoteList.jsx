@@ -31,7 +31,7 @@ export default function NoteList({ children, notes, onDelete, onArchive, isColla
             ))}
           </div>
         ) : (
-          <p className='notes-list__empty-message'>Tidak ada catatan</p>
+          <p className='notes-list__empty-message'>You have no notes yet!</p>
         )
       ) : null}
     </>
