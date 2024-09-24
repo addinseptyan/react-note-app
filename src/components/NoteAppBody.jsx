@@ -1,22 +1,22 @@
-import React from "react";
-import NoteList from "./NoteList";
-import NoteInput from "./NoteInput";
+import React from 'react';
+import NoteList from './NoteList';
+import NoteInput from './NoteInput';
 
 export default function NoteAppBody({
   archivedNotes,
   notes,
   onDelete,
   onArchive,
-  onAddNote
+  onAddNote,
 }) {
   return (
-    <div className="note-app__body">
+    <div className='note-app__body'>
       <NoteInput onAddNote={onAddNote} />
       <NoteList notes={notes} onDelete={onDelete} onArchive={onArchive}>
-        Catatan Aktif
+        Notes
       </NoteList>
-      <NoteList notes={archivedNotes} onDelete={onDelete} onArchive={onArchive}>
-        Arsip
+      <NoteList notes={archivedNotes} onDelete={onDelete} onArchive={onArchive} isCollapse={true}>
+        Archive
       </NoteList>
     </div>
   );

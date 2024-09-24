@@ -1,24 +1,20 @@
-import React from "react";
-import NoteAppBody from "./NoteAppBody";
-import NoteAppHeader from "./NoteAppHeader";
-import { getData, saveData } from "../utils/browserStorage";
+import React from 'react';
+import NoteAppBody from './NoteAppBody';
+import NoteAppHeader from './NoteAppHeader';
+import { getData, saveData } from '../utils/browser-storage';
 
 class NoteApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       notes: getData(),
-      searchKeyword: "",
+      searchKeyword: '',
     };
 
     this.handleDelete = this.handleDelete.bind(this);
     this.handleArchive = this.handleArchive.bind(this);
     this.handleAddNote = this.handleAddNote.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-
-    this.generateNotesWithSearch = this.generateNotesWithSearch.bind(this);
-    this.generateActiveNotes = this.generateActiveNotes.bind(this);
-    this.generateArchiveNotes = this.generateArchiveNotes.bind(this);
   }
 
   handleDelete(id) {
@@ -42,13 +38,16 @@ class NoteApp extends React.Component {
 
   handleAddNote(newNote) {
     this.setState((prevState) => {
-      const updatedNotes = [...prevState.notes, {
-        id: +new Date(),
-        title: newNote.title,
-        body: newNote.body,
-        createdAt: new Date().toISOString(),
-        archived: false,
-      }];
+      const updatedNotes = [
+        ...prevState.notes,
+        {
+          id: +new Date(),
+          title: newNote.title,
+          body: newNote.body,
+          createdAt: new Date().toISOString(),
+          archived: false,
+        },
+      ];
       saveData(updatedNotes);
       return { notes: updatedNotes };
     });
@@ -60,24 +59,24 @@ class NoteApp extends React.Component {
     });
   }
 
-  generateNotesWithSearch() {
+  generateNotesWithSearch = () => {
     const notes = this.state.notes;
     const keyword = this.state.searchKeyword;
 
     return notes.filter((note) => note.title.toLowerCase().includes(keyword));
-  }
+  };
 
-  generateActiveNotes() {
+  generateActiveNotes = () => {
     return this.generateNotesWithSearch().filter(
       (note) => note.archived === false
     );
-  }
+  };
 
-  generateArchiveNotes() {
+  generateArchiveNotes = () => {
     return this.generateNotesWithSearch().filter(
       (note) => note.archived === true
     );
-  }
+  };
 
   render() {
     return (

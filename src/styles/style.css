@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: #202124;
   color: white;
 }
@@ -14,7 +14,7 @@ input,
 textarea {
   padding: 12px;
   margin: 12px 0;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: transparent;
   color: white;
   border: 1px solid #aaa;
@@ -83,12 +83,25 @@ textarea::placeholder {
   width: 100%;
   padding: 8px;
   background-color: transparent;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   color: white;
   border: 1px solid #aaa;
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.notes-list__title {
+  display: inline-block;
+}
+
+.notes-list__collapse-button {
+  background-color: transparent;
+  color: white;
+  border: 0;
+  height: 24px;
+  cursor: pointer;
+  transform: translateY(5px);
 }
 
 .notes-list {
@@ -146,7 +159,7 @@ textarea::placeholder {
   border: 0;
   border-top: 1px solid #aaa;
   padding: 8px 0;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: bold;
   cursor: pointer;
 }
@@ -184,7 +197,7 @@ textarea::placeholder {
   }
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1000px) {
   .notes-list {
     grid-template-columns: repeat(4, 1fr);
   }

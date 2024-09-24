@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function NoteSearch({ onSearch }) {
   const handleSearch = (event) => {
@@ -6,10 +6,10 @@ export default function NoteSearch({ onSearch }) {
   };
 
   return (
-    <div className="note-search">
+    <div className='note-search'>
       <input
-        type="text"
-        placeholder="Cari catatan ..."
+        type='text'
+        placeholder='Search notes ...'
         onChange={handleSearch}
       />
     </div>

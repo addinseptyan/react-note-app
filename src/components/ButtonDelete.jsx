@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 export default function ButtonDelete({ id, onDelete }) {
   return (
-    <button className="note-item__delete-button" onClick={() => onDelete(id)}>
-      Delete
+    <button className='note-item__delete-button' onClick={() => onDelete(id)}>
+      Delete <span className='naruto'></span>
     </button>
   );
 }

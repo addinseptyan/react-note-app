@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 class NoteInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      body: "",
+      title: '',
+      body: '',
       limitTitle: 50,
     };
 
@@ -19,7 +19,7 @@ class NoteInput extends React.Component {
 
     if (value.length <= this.state.limitTitle) {
       this.setState({
-        title: value
+        title: value,
       });
     }
   }
@@ -35,36 +35,38 @@ class NoteInput extends React.Component {
     const title = this.state.title;
     const body = this.state.body;
 
-    this.props.onAddNote({title, body});
+    this.props.onAddNote({ title, body });
     this.setState({
       title: '',
-      body: ''
+      body: '',
     });
   }
 
   render() {
     return (
-      <div className="note-input">
-        <h2>Buat catatan</h2>
+      <div className='note-input'>
+        <h2>Create your note</h2>
         <form onSubmit={this.handleSubmit}>
-          <p className="note-input__title__char-limit">Sisa karakter: {(this.state.limitTitle) - (this.state.title.length)}</p>
+          <p className='note-input__title__char-limit'>
+            Remaining characters: {this.state.limitTitle - this.state.title.length}
+          </p>
           <input
-            className="note-input__title"
-            type="text"
-            placeholder="Ini adalah judul ..."
+            className='note-input__title'
+            type='text'
+            placeholder='This is a title ...'
             value={this.state.title}
             onChange={this.handleTitle}
             required
           />
           <textarea
-            className="note-input__body"
-            placeholder="Tuliskan catatanmu disini ..."
+            className='note-input__body'
+            placeholder='Type your note here ...'
             value={this.state.body}
             onChange={this.handleBody}
             required
           ></textarea>
-          <button type="submit" className="note-input">
-            Buat
+          <button type='submit' className='note-input'>
+            Create
           </button>
         </form>
       </div>
