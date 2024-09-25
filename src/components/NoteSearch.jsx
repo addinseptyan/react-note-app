@@ -1,17 +1,16 @@
-import React from 'react';
+import React from 'react'
+import { useNotesContext } from '../providers/NotesProvider'
 
-export default function NoteSearch({ onSearch }) {
-  const handleSearch = (event) => {
-    onSearch(event.target.value.toLowerCase());
-  };
+export default function NoteSearch() {
+  const { handleSearch } = useNotesContext()
 
   return (
     <div className='note-search'>
       <input
         type='text'
         placeholder='Search notes ...'
-        onChange={handleSearch}
+        onChange={(e) => handleSearch(e.target.value.toLowerCase())}
       />
     </div>
-  );
+  )
 }

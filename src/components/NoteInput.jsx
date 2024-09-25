@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useNotesContext } from '../providers/NotesProvider'
 
-function NoteInput({ onAddNote }) {
+function NoteInput() {
   const [note, setNote] = useState({ title: '', body: '' })
+  const { handleAddNote } = useNotesContext()
   const maxLength = 50
 
   const handleTitle = (e) => {
@@ -16,7 +18,8 @@ function NoteInput({ onAddNote }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onAddNote(note)
+    handleAddNote(note)
+    setNote({ title: '', body: '' })
   }
 
   return (

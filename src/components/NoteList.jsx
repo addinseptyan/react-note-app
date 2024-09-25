@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import NoteItem from './NoteItem'
 import { Icons } from './Icons'
 
-export default function NoteList({
-  children,
-  notes,
-  onDelete,
-  onArchive,
-  isCollapse,
-}) {
+export default function NoteList({ notes, isCollapse, children }) {
   const [collapse, setCollapse] = useState(isCollapse)
 
   const handleCollapse = () => {
@@ -35,12 +29,7 @@ export default function NoteList({
         notes.length ? (
           <div className='notes-list'>
             {notes.map((note) => (
-              <NoteItem
-                key={note.id}
-                {...note}
-                onDelete={onDelete}
-                onArchive={onArchive}
-              />
+              <NoteItem key={note.id} {...note} />
             ))}
           </div>
         ) : (

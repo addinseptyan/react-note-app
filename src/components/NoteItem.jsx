@@ -1,17 +1,9 @@
-import React from 'react';
-import ButtonDelete from './ButtonDelete';
-import ButtonArchive from './ButtonArchive';
-import { showFormattedDate } from '../utils';
+import React from 'react'
+import ButtonDelete from './ButtonDelete'
+import ButtonArchive from './ButtonArchive'
+import { showFormattedDate } from '../utils'
 
-export default function NoteItem({
-  title,
-  createdAt,
-  body,
-  id,
-  onDelete,
-  archived,
-  onArchive,
-}) {
+export default function NoteItem({ title, createdAt, body, id, archived }) {
   return (
     <div className='note-item'>
       <div className='note-item__content'>
@@ -20,9 +12,9 @@ export default function NoteItem({
         <p className='note-item__body'>{body}</p>
       </div>
       <div className='note-item__action'>
-        <ButtonDelete id={id} onDelete={onDelete} />
-        <ButtonArchive id={id} isArchive={archived} onArchive={onArchive} />
+        <ButtonDelete id={id} />
+        <ButtonArchive id={id} isArchive={archived} />
       </div>
     </div>
-  );
+  )
 }

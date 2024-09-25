@@ -1,70 +1,15 @@
 import React, { useState } from 'react'
 import NoteAppBody from './NoteAppBody'
 import NoteAppHeader from './NoteAppHeader'
-import { getData, saveData } from '../utils/browser-storage'
+import NotesProvider from '../providers/NotesProvider'
 
 function NoteApp() {
-  const [notes, setNotes] = useState(getData())
-  const [searchKeyword, setSearchKeyword] = useState('')
-
-  const handleDelete = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id)
-    saveData(updatedNotes)
-    setNotes(updatedNotes)
-  }
-
-  const handleArchive = (id) => {
-    const updatedNotes = notes.map((note) => {
-      if (note.id === id) return { ...note, archived: !note.archived }
-      return note
-    })
-    saveData(updatedNotes)
-    setNotes(updatedNotes)
-  }
-
-  const handleAddNote = (newNote) => {
-    const updatedNotes = [
-      ...notes,
-      {
-        id: +new Date(),
-        title: newNote.title,
-        body: newNote.body,
-        createdAt: new Date().toISOString(),
-        archived: false,
-      },
-    ]
-    saveData(updatedNotes)
-    setNotes(updatedNotes)
-  }
-
-  const handleSearch = (keyword) => {
-    setSearchKeyword(keyword)
-  }
-
-  const generateNotesWithSearch = () => {
-    return notes.filter((note) =>
-      note.title.toLowerCase().includes(searchKeyword)
-    )
-  }
-
-  const generateNotes = () => {
-    return generateNotesWithSearch().filter((note) => note.archived === false)
-  }
-
-  const generateArchiveNotes = () => {
-    return generateNotesWithSearch().filter((note) => note.archived === true)
-  }
-
   return (
     <>
-      <NoteAppHeader onSearch={handleSearch} />
-      <NoteAppBody
-        notes={generateNotes()}
-        archivedNotes={generateArchiveNotes()}
-        onDelete={handleDelete}
-        onArchive={handleArchive}
-        onAddNote={handleAddNote}
-      />
+      <NotesProvider>
+        <NoteAppHeader />
+        <NoteAppBody />
+      </NotesProvider>
     </>
   )
 }
