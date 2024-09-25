@@ -1,77 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react'
 
-class NoteInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      body: '',
-      limitTitle: 50,
-    };
+function NoteInput({ onAddNote }) {
+  const [note, setNote] = useState({ title: '', body: '' })
+  const maxLength = 50
 
-    this.handleTitle = this.handleTitle.bind(this);
-    this.handleBody = this.handleBody.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleTitle(event) {
-    const value = event.target.value;
-
-    if (value.length <= this.state.limitTitle) {
-      this.setState({
-        title: value,
-      });
+  const handleTitle = (e) => {
+    if (e.target.value.length <= maxLength) {
+      setNote({ ...note, title: e.target.value })
     }
   }
 
-  handleBody(event) {
-    this.setState({
-      body: event.target.value,
-    });
+  const handleBody = (e) => {
+    setNote({ ...note, body: e.target.value })
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const title = this.state.title;
-    const body = this.state.body;
-
-    this.props.onAddNote({ title, body });
-    this.setState({
-      title: '',
-      body: '',
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onAddNote(note)
   }
 
-  render() {
-    return (
-      <div className='note-input'>
-        <h2>Create your note</h2>
-        <form onSubmit={this.handleSubmit}>
-          <p className='note-input__title__char-limit'>
-            Remaining characters: {this.state.limitTitle - this.state.title.length}
-          </p>
-          <input
-            className='note-input__title'
-            type='text'
-            placeholder='This is a title ...'
-            value={this.state.title}
-            onChange={this.handleTitle}
-            required
-          />
-          <textarea
-            className='note-input__body'
-            placeholder='Type your note here ...'
-            value={this.state.body}
-            onChange={this.handleBody}
-            required
-          ></textarea>
-          <button type='submit' className='note-input'>
-            Create
-          </button>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className='note-input'>
+      <h2>Create your note</h2>
+      <form onSubmit={handleSubmit}>
+        <p className='note-input__title__char-limit'>
+          Remaining characters: {maxLength - note.title.length}
+        </p>
+        <input
+          className='note-input__title'
+          type='text'
+          placeholder='This is a title ...'
+          value={note.title}
+          onChange={handleTitle}
+          required
+        />
+        <textarea
+          className='note-input__body'
+          placeholder='Type your note here ...'
+          value={note.body}
+          onChange={handleBody}
+          required
+        ></textarea>
+        <button type='submit' className='note-input'>
+          Create
+        </button>
+      </form>
+    </div>
+  )
 }
 
-export default NoteInput;
+export default NoteInput

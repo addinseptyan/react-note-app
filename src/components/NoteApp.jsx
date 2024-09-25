@@ -1,97 +1,72 @@
-import React from 'react';
-import NoteAppBody from './NoteAppBody';
-import NoteAppHeader from './NoteAppHeader';
-import { getData, saveData } from '../utils/browser-storage';
+import React, { useState } from 'react'
+import NoteAppBody from './NoteAppBody'
+import NoteAppHeader from './NoteAppHeader'
+import { getData, saveData } from '../utils/browser-storage'
 
-class NoteApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      notes: getData(),
-      searchKeyword: '',
-    };
+function NoteApp() {
+  const [notes, setNotes] = useState(getData())
+  const [searchKeyword, setSearchKeyword] = useState('')
 
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleArchive = this.handleArchive.bind(this);
-    this.handleAddNote = this.handleAddNote.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
+  const handleDelete = (id) => {
+    const updatedNotes = notes.filter((note) => note.id !== id)
+    saveData(updatedNotes)
+    setNotes(updatedNotes)
   }
 
-  handleDelete(id) {
-    this.setState((prevState) => {
-      const updatedNotes = prevState.notes.filter((note) => note.id !== id);
-      saveData(updatedNotes);
-      return { notes: updatedNotes };
-    });
+  const handleArchive = (id) => {
+    const updatedNotes = notes.map((note) => {
+      if (note.id === id) return { ...note, archived: !note.archived }
+      return note
+    })
+    saveData(updatedNotes)
+    setNotes(updatedNotes)
   }
 
-  handleArchive(id) {
-    this.setState((prevState) => {
-      const updatedNotes = prevState.notes.map((note) => {
-        if (note.id === id) return { ...note, archived: !note.archived };
-        return note;
-      });
-      saveData(updatedNotes);
-      return { notes: updatedNotes };
-    });
+  const handleAddNote = (newNote) => {
+    const updatedNotes = [
+      ...notes,
+      {
+        id: +new Date(),
+        title: newNote.title,
+        body: newNote.body,
+        createdAt: new Date().toISOString(),
+        archived: false,
+      },
+    ]
+    saveData(updatedNotes)
+    setNotes(updatedNotes)
   }
 
-  handleAddNote(newNote) {
-    this.setState((prevState) => {
-      const updatedNotes = [
-        ...prevState.notes,
-        {
-          id: +new Date(),
-          title: newNote.title,
-          body: newNote.body,
-          createdAt: new Date().toISOString(),
-          archived: false,
-        },
-      ];
-      saveData(updatedNotes);
-      return { notes: updatedNotes };
-    });
+  const handleSearch = (keyword) => {
+    setSearchKeyword(keyword)
   }
 
-  handleSearch(keyword) {
-    this.setState({
-      searchKeyword: keyword,
-    });
+  const generateNotesWithSearch = () => {
+    return notes.filter((note) =>
+      note.title.toLowerCase().includes(searchKeyword)
+    )
   }
 
-  generateNotesWithSearch = () => {
-    const notes = this.state.notes;
-    const keyword = this.state.searchKeyword;
-
-    return notes.filter((note) => note.title.toLowerCase().includes(keyword));
-  };
-
-  generateActiveNotes = () => {
-    return this.generateNotesWithSearch().filter(
-      (note) => note.archived === false
-    );
-  };
-
-  generateArchiveNotes = () => {
-    return this.generateNotesWithSearch().filter(
-      (note) => note.archived === true
-    );
-  };
-
-  render() {
-    return (
-      <>
-        <NoteAppHeader onSearch={this.handleSearch} />
-        <NoteAppBody
-          archivedNotes={this.generateArchiveNotes()}
-          notes={this.generateActiveNotes()}
-          onDelete={this.handleDelete}
-          onArchive={this.handleArchive}
-          onAddNote={this.handleAddNote}
-        />
-      </>
-    );
+  const generateNotes = () => {
+    return generateNotesWithSearch().filter((note) => note.archived === false)
   }
+
+  const generateArchiveNotes = () => {
+    return generateNotesWithSearch().filter((note) => note.archived === true)
+  }
+
+  return (
+    <>
+      <NoteAppHeader onSearch={handleSearch} />
+      <NoteAppBody
+        notes={generateNotes()}
+        archivedNotes={generateArchiveNotes()}
+        onDelete={handleDelete}
+        onArchive={handleArchive}
+        onAddNote={handleAddNote}
+      />
+    </>
+  )
 }
 
-export default NoteApp;
+export default NoteApp
