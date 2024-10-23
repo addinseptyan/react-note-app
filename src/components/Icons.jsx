@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export const Icons = {
   ArrowDropDown: () => (
@@ -12,15 +12,15 @@ export const Icons = {
       <path d='M480-360 280-560h400L480-360Z' />
     </svg>
   ),
-  ArrowDropUp: () => (
+  ArrowDropRight: () => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       height='24px'
       viewBox='0 -960 960 960'
       width='24px'
-      fill='currentColor'
+      fill='#e8eaed'
     >
-      <path d='m280-400 200-200 200 200H280Z' />
+      <path d='M400-280v-400l200 200-200 200Z' />
     </svg>
-  )
-};
+  ),
+}
